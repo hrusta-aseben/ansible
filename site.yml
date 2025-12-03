@@ -16,12 +16,25 @@
       update_cache: yes
     when: ansible_distribution == "Ubuntu"
 
-- hosts: file_server
-  become: true
-  tasks:
-
-  - name: install samba
+  - name: install unzip
     apt:
-      name: samba
-      state: latest
-    when: ansible_distribution == "Ubuntu"
+     name: unzip
+
+  - name: install terraform
+    unarchive:
+      src: https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip
+      dest: /usr/local/bin
+      remote_src: yes
+      mode: 0775
+      owner: root
+      group: root
+
+  - name: copy html file
+    tags: apache, server
+    copy:
+      src: default_site.html
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 0644
+
