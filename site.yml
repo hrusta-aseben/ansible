@@ -10,8 +10,18 @@
       name:
         - apache2
         - libapache2-mod-php
+        - mariadb-server
+        - samba
       state: latest
       update_cache: yes
     when: ansible_distribution == "Ubuntu"
 
+- hosts: file_server
+  become: true
+  tasks:
 
+  - name: install samba
+    apt:
+      name: samba
+      state: latest
+    when: ansible_distribution == "Ubuntu"
